@@ -1,0 +1,16 @@
+dbDeployment:
+  image: "image-url"
+  tag: "postgres-image-tag"
+  replicas: "1"
+  claimName: "hc-claim"
+healthcheckDeployment:
+  image: "image-url"
+  tag: ""
+healthcheckSecret:
+  tlscrt: "base64_crt"
+  tlskey: "base64_key"
+namespace: "ns1"
+nodeSelector: "10.1.2.3"
+host: "ingress-url"
+serviceName: "healthcheck1-svc"
+path: "/"
