@@ -2,7 +2,7 @@ FROM python:3.9.12-slim-bullseye
 
 WORKDIR /app-files
 
-ADD .. /app-files
+ADD . /app-files
 
 EXPOSE 443
 
