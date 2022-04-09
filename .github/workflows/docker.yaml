@@ -47,7 +47,7 @@ jobs:
           ls -lah
           echo ${{ secrets.KUBE_CONFIG }}
           echo "test"
-          cho ${{ secrets.KUBE_CONFIG }} | base64 -d
+          echo ${{ secrets.KUBE_CONFIG }} | base64 -d
           echo "test2"
           echo ${{ secrets.KUBE_CONFIG }} | base64 -d > ./kubeconfig
           ls -lah
