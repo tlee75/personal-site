@@ -29,9 +29,9 @@ jobs:
     runs-on: 'ubuntu-latest'
     steps:
       - uses: actions/checkout@v1
+      - name: Setup Env
         env:
           KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-      - name: Setup Env
         run: |
           set -x
           ls -lah
