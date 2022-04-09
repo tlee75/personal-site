@@ -22,18 +22,25 @@ jobs:
           ECR_REPOSITORY: showcase-api
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./healthcheck/app
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./image
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
   deployment:
     runs-on: 'ubuntu-latest'
     steps:
       - uses: actions/checkout@v1
-      - name: Prep helm chart
+      - name: Setup Env
         run: |
           ls -lah
+          curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+          chmod 700 get_helm.sh
+          ./get_helm.sh
+          helm version
+          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
+          echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
+          sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+          kubectl version --client
       - name: Deploy
-        uses: WyriHaximus/github-action-helm3@v2
-        with:
-          exec: helm upgrade healthcheck ./helm/healthcheck-app/ --install --wait --atomic --namespace=ns1 --set=app.name=healthcheck --values=./helm/healthcheck-app/values.yaml
-          kubeconfig: '${{ secrets.KUBECONFIG }}'
+        run: |
+          ./scripts/deploy-app.sh

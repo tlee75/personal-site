@@ -4,6 +4,6 @@ kubectl delete -f kubernetes-ingress/rbac/rbac.yaml
 kubectl delete -f kubernetes-ingress/common/ingress-class.yaml
 kubectl delete -f kubernetes-ingress/deployment/nginx-ingress.yaml
 #kubectl delete -f kubernetes-ingress/service/loadbalancer-aws-elb.yaml
-kubectl delete -f kubernetes-ingress/hostname-app-svc.yaml
+kubectl delete -f kubernetes-ingress/apache-app-svc.yaml
 kubectl delete -f kubernetes-ingress/micro-ingress.yaml
 #kubectl delete -f kubernetes-ingress/common/ns-and-sa.yaml
