@@ -1,20 +1,3 @@
-metadata:
-  managedFields:
-    - apiVersion: v1
-      fieldsType: Fieldsv1
-      fieldsV1:
-        f:data:
-          .: {}
-          f:tls.crt: {}
-          f:tls.key: {}
-        f:type: {}
-      manager: kubectl
-      operation: Update
-      time: "2021-01-29T20:33:54Z"
-    name: healthcheck-certs
-    namespace: {{ .Values.namespace }}
-type: kubernetes.io/tls
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
