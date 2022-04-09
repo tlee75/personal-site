@@ -31,10 +31,7 @@ jobs:
       - uses: actions/checkout@v1
       - name: Prep helm chart
         run: |
-          mv ./.helm/app/Chart.yaml ./.helm/app/Chart.old.yaml &&
-          cat ./.helm/app/Chart.old.yaml | grep -v appVersion > ./.helm/app/Chart.yaml &&
-          echo -e "\r\nappVersion: v${GITHUB_REF##*/}\r\n" >> ./.helm/app/Chart.yaml &&
-          cat ./.helm/app/Chart.yaml
+          ls -lah
       - name: Deploy
         uses: WyriHaximus/github-action-helm3@v2
         with:
