@@ -42,9 +42,13 @@ jobs:
           echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
           sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
           kubectl version --client
-          echo "test"
           ls -lah
+          echo ${{ secrets.KUBE_CONFIG }}
+          echo "test"
+          cho ${{ secrets.KUBE_CONFIG }} | base64 -d
+          echo "test2"
           echo ${{ secrets.KUBE_CONFIG }} | base64 -d > ./kubeconfig
+          ls -lah
           export KUBECONFIG=./kubeconfig
           env
           ls
