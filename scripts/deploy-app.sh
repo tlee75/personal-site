@@ -5,6 +5,6 @@ kubectl apply -f kubernetes-ingress/rbac/rbac.yaml
 kubectl apply -f kubernetes-ingress/common/ingress-class.yaml
 kubectl apply -f kubernetes-ingress/deployment/nginx-ingress.yaml
 kubectl apply -f kubernetes-ingress/service/loadbalancer-aws-elb.yaml
-kubectl apply -f kubernetes-ingress/hostname-app-svc.yaml
+kubectl apply -f kubernetes-ingress/apache-app-svc.yaml
 kubectl apply -f kubernetes-ingress/micro-ingress.yaml
 kubectl get svc --namespace=nginx-ingress

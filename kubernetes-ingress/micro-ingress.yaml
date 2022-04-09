@@ -17,6 +17,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: hostname-svc
+                name: apache-svc
                 port:
                   number: 80
