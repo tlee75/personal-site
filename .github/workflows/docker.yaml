@@ -29,6 +29,8 @@ jobs:
     runs-on: 'ubuntu-latest'
     steps:
       - uses: actions/checkout@v1
+        env:
+          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
       - name: Setup Env
         run: |
           set -x
@@ -45,11 +47,11 @@ jobs:
           sudo apt install cl-base64 -y
           which base64
           ls -lah
-          echo ${{ secrets.KUBE_CONFIG }}
+          echo ${KUBE_CONFIG }
           echo "test"
-          echo ${{ secrets.KUBE_CONFIG }} | base64 -d
+          echo ${KUBE_CONFIG} | base64 -d
           echo "test2"
-          echo ${{ secrets.KUBE_CONFIG }} | base64 -d > ./kubeconfig
+          echo ${KUBE_CONFIG } | base64 -d > ./kubeconfig
           ls -lah
           export KUBECONFIG=./kubeconfig
           env
