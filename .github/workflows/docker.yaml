@@ -47,11 +47,7 @@ jobs:
           sudo apt install cl-base64 -y
           which base64
           ls -lah
-          echo $KUBE_CONFIG
-          echo "test"
-          echo $KUBE_CONFIG | base64 -d
-          echo "test2"
-          echo $KUBE_CONFIG | base64 -d > ./kubeconfig
+          echo "$KUBE_CONFIG" | base64 -d > ./kubeconfig
           ls -lah
           export KUBECONFIG=./kubeconfig
           env
