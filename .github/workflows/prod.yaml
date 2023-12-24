@@ -2,6 +2,10 @@ name: Build Prod
 
 on:
   workflow_dispatch:
+    inputs:
+      DEPLOY_NODE:
+          required: true
+          type: string
 
 jobs:
   build:
@@ -43,5 +47,6 @@ jobs:
       - name: Deploy
         env:
           IMAGE_TAG: ${{ github.sha }}
+          DEPLOY_NODE: ${{ inputs.DEPLOY_NODE }}
         run: |
           ./scripts/update-docker-image.sh
