@@ -117,3 +117,12 @@ curl --request POST \
   
 # 
 ```
+
+
+#### Docker
+
+```shell
+# Start docker container and exec into it
+ sudo docker run -it --name busybox busybox:latest /bin/sh
+
+```
