@@ -5,6 +5,7 @@ on:
 
 jobs:
   build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -18,10 +19,12 @@ jobs:
         env:
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t docker.io/${{ vars.DOCKERHUB_REPO }}:$IMAGE_TAG ./image
-          docker push docker.io/${{ vars.DOCKERHUB_REPO }}:$IMAGE_TAG
+          docker build -t docker.io/${{ vars.DOCKERHUB_ACCOUNT }}/${{ vars.DOCKERHUB_REPO }}:$IMAGE_TAG ./image
+          docker push docker.io/${{ vars.DOCKERHUB_ACCOUNT }}/${{ vars.DOCKERHUB_REPO }}:$IMAGE_TAG
 
   deployment:
+    name: Deploy
+    needs: [ build ]
     runs-on: 'ubuntu-latest'
     steps:
       - uses: actions/checkout@v1
