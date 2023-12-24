@@ -38,12 +38,16 @@ jobs:
           set -x
           wget -q https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
           sudo dpkg -i cloudflared-linux-amd64.deb
-      - name: Setup SSH Config
+      - name: Create SSH Config
         uses: benoitchantre/setup-ssh-authentication-action@1.0.1
         with:
           private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           private-key-name: oci_private_key
           ssh-config: ${{ vars.SSH_CONFIG }}
+      - name: Setup SSH Config
+        run: |
+          sed -i "s/SSH_CF_ACCESS_CLIENT_ID/${{ secrets.CF_ACCESS_CLIENT_ID }}/" ~/.ssh/config
+          sed -i "s/SSH_CF_ACCESS_CLIENT_SECRET/${{ secrets.CF_ACCESS_CLIENT_SECRET }}/" ~/.ssh/config
       - name: Deploy
         env:
           IMAGE_TAG: ${{ github.sha }}
