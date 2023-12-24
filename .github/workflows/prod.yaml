@@ -1,4 +1,4 @@
-name: Docker Build
+name: Build Prod
 
 on:
   workflow_dispatch:
@@ -26,6 +26,7 @@ jobs:
     name: Deploy
     needs: [ build ]
     runs-on: 'ubuntu-latest'
+    environment: prod
     steps:
       - uses: actions/checkout@v1
       - name: Setup cloudflared
