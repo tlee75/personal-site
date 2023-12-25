@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set +e
+set -x
+
 docker ps -a
 docker image ls
 sudo docker stop interview
