@@ -1,13 +1,13 @@
 # Personal Site
 
-This repository contains very basic scripting and automation geared toward deploying a personal website based on Mkdocs 
+This repository contains very basic scripting and automation geared toward deploying a personal website based on [Mkdocs](https://www.mkdocs.org/) 
 which can be used during interviews for example.
 
 ## Run Locally:
 
 ### Mkdocs
 
-Use the built in mkdocs server with hot reloading
+Use the built in Mkdocs server with hot reloading
 
 #### Setup
 `python3 -m pip install -r requirements.mkdocs.txt`
@@ -17,7 +17,7 @@ Use the built in mkdocs server with hot reloading
 
 ### Docker
 
-Build and run a docker image locally
+Build and run a Docker image locally
 
 ### Docker image Usage
 `docker build -t interview:v1 -f dockerfiles/mkdocs/Dockerfile .`
@@ -34,15 +34,16 @@ have been installed.
 
 ### Cloudflare
 
-Create/login to your cloudflare.com account and ensure the domain you want to use for this is activated.
+Create/login to your [Cloudflare dashboard](https://dash.cloudflare.com/) and ensure the domain you want to use for this is activated.
 
-The next goal is to install the cloudflared tunnel software on the OCI instance, so we can get access to our compute from 
-a Github Runner and from the public internet without the need to open any ports on the firewall. 
+The next goal is to configure the Cloudflare Tunnel so we can get access to our compute from a Github Runner and from the 
+public internet without the need to open any ports on the firewall. 
 
-Go to the Zero-Trust dashboard and create a Cloudflare tunnel which will run on your OCI instance and create an ingress 
-rule (aka Public Hostname from UI) which will proxy your HTTP and SSH traffic received by the tunnel to the correct ports 
-on your instance. For SSH, use a subdomain like `ssh-ocinode1` for the host and set the service as SSH type at localhost, 
-port 22. The HTTP rule can use your root domain and the www record, pointed at localhost:8000.
+Go to the [Cloudflare Zero-Trust Dashboard](https://one.dash.cloudflare.com/) and create a Cloudflare tunnel which will 
+run on your OCI instance and create an ingress rule (aka Public Hostname from UI) which will proxy your HTTP and SSH 
+traffic received by the tunnel to the correct ports on your instance. For SSH, use a subdomain like `ssh-ocinode1` for 
+the host and set the service as SSH type at localhost, port 22. The HTTP rule can use your root domain and the www record, 
+pointed at localhost:8000.
 
 Create a Service Auth token that will be used by the Github runner as well as when you SSH from your workstation, give it
 a name which represents the application it will be used by, such as "Personal Site" or something to that effect.
@@ -71,7 +72,8 @@ Next, ensure `cloudflared` is also installed on your local workstation and then 
 
 ### Dockerhub
 
-Create a new Dockerhub repository and create an access token, so you can push and pull images to this registry repo.  
+Create a new [Dockerhub](https://hub.docker.com/) repository and ensure you've created an access token for deployment 
+automation dedicated to pushing and pulling images.
 
 ### Github
 
