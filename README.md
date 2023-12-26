@@ -30,11 +30,13 @@ Build and run a Docker image locally
 You will need an [Oracle Cloud Infrastructure](https://www.oracle.com/cloud/) account along with an amd64 based compute 
 offered in their free-tier such as the 1 OCPU and 1 GB RAM instances. Currently this repo utilizes the `VM.Standard.E2.1.Micro`.  
 Ensure [Docker](https://docs.docker.com/engine/install/ubuntu/) and [cloudflared](https://pkg.cloudflare.com/index.html) 
-have been installed.  
+have been installed. I also recommend creating a separate SSH private key which will be used later which can be rotated
+easily on a regular basis.  
 
 ### Cloudflare
 
-Create/login to your [Cloudflare dashboard](https://dash.cloudflare.com/) and ensure the domain you want to use for this is activated.
+Create/login to your [Cloudflare dashboard](https://dash.cloudflare.com/) and ensure the domain you want to use for this 
+is activated.
 
 The next goal is to configure the Cloudflare Tunnel so we can get access to our compute from a Github Runner and from the 
 public internet without the need to open any ports on the firewall. 
