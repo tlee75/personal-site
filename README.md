@@ -1,29 +1,112 @@
-# Interview Site
+# Personal Site
 
-This repository contains very basic scripting and automation geared toward deploying a website to be used during interviews
-(such as my own) which leverage various DevOps technologies and methods.
+This repository contains very basic scripting and automation geared toward deploying a personal website based on Mkdocs 
+which can be used during interviews for example.
 
-## Mkdocs:
+## Run Locally:
+
+### Mkdocs
+
+Use the built in mkdocs server with hot reloading
 
 #### Setup
 `python3 -m pip install -r requirements.mkdocs.txt`
 
-### Run Server
+#### Run Server
 `mkdocs serve`
 
+### Docker
+
+Build and run a docker image locally
 
 ### Docker image Usage
 `docker build -t interview:v1 -f dockerfiles/mkdocs/Dockerfile .`
 
 `docker run -p 8000:8000 interview:v1`
 
+## Deploy Publicly
+
+### OCI
+You will need an [Oracle Cloud Infrastructure](https://www.oracle.com/cloud/) account along with an amd64 based compute 
+offered in their free-tier such as the 1 OCPU and 1 GB RAM instances. Currently this repo utilizes the `VM.Standard.E2.1.Micro`.  
+Ensure [Docker](https://docs.docker.com/engine/install/ubuntu/) and [cloudflared](https://pkg.cloudflare.com/index.html) 
+have been installed.  
+
+### Cloudflare
+
+Create/login to your cloudflare.com account and ensure the domain you want to use for this is activated.
+
+The next goal is to install the cloudflared tunnel software on the OCI instance, so we can get access to our compute from 
+a Github Runner and from the public internet without the need to open any ports on the firewall. 
+
+Go to the Zero-Trust dashboard and create a Cloudflare tunnel which will run on your OCI instance and create an ingress 
+rule (aka Public Hostname from UI) which will proxy your HTTP and SSH traffic received by the tunnel to the correct ports 
+on your instance. For SSH, use a subdomain like `ssh-ocinode1` for the host and set the service as SSH type at localhost, 
+port 22. The HTTP rule can use your root domain and the www record, pointed at localhost:8000.
+
+Create a Service Auth token that will be used by the Github runner as well as when you SSH from your workstation, give it
+a name which represents the application it will be used by, such as "Personal Site" or something to that effect.
+
+Next, it is very important that you create a Cloudflare Application that will protect the `ssh-ocinode1` endpoint with 
+the Service Auth Token you just created. Ensure the Application covers ONLY the SSH endpoint and not the `www` or root 
+domain itself. Ensure the Policy uses a "Service Auth" action and includes your Service Auth Token in the rules selector.
+
+Lastly, create a DNS record which points at the instance's private IP, so you have an FQDN for the hostname.
+
+### Cloudflare SSH Config
+
+To SSH via your Cloudflare Tunnel, add a host to your SSH config that looks something like this:  
+
+```shell
+Host ocinode1-cf
+  Hostname ssh-ocinode1.yourdomain.com
+  User ubuntu
+  IdentityFile ~/.ssh/oci_private_key
+  StrictHostKeyChecking no
+  ProxyCommand cloudflared access ssh --id 'XXXXXXXXXX' --secret 'YYYYYYYYYYY' --hostname %h
+```
+
+Next, ensure `cloudflared` is also installed on your local workstation and then attempt to SSH into the instance with 
+`ssh ocinode1-cf`. If this works, then you're ready to proceed to the next step.
+
+### Dockerhub
+
+Create a new Dockerhub repository and create an access token, so you can push and pull images to this registry repo.  
+
+### Github
+
+#### Environment 
+Create a Github environment named `prod` and populate with the following:  
+
+1. Github Secret named `SSH_PRIVATE_KEY` with a private key to your OCI instance in this format:
+    ```shell
+    -----BEGIN RSA PRIVATE KEY-----
+    XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    ...
+    XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    -----END RSA PRIVATE KEY-----
+    ```
+ 
+2. Github Variable named `SSH_CONFIG`with the following contents(replace yourdomain.com with your actual domain):  
+
+    ```shell
+    Host ocinode1
+      Hostname ssh-ocinode1.yourdomain.com
+      User ubuntu
+      IdentityFile ~/.ssh/oci_private_key
+      ProxyCommand cloudflared access ssh --id SSH_CF_ACCESS_CLIENT_ID --secret SSH_CF_ACCESS_CLIENT_SECRET --hostname %h
+      StrictHostKeyChecking no
+    ```
+
+Next, create Repository secrets named `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN` and store your Dockerhub access token info.
+Additionally, create two more Github repository secrets named `CF_ACCESS_CLIENT_ID` and `CF_ACCESS_CLIENT_SECRET` and store
+your Cloudflare Service Auth token credentials. Also create a Github repository variables named `DOCKERHUB_ACCOUNT` and 
+`DOCKERHUB_REPO` and store the name of your Dockerhub account and repository respectively.
+
+#### Actions
+
+Lastly, initiate a deployment by going to the Actions tab and triggering the prod workflow using the Workflow dispatch menu.
 
 
-## Deprecated
-
-### Deploy EKS Cluster
-`cd eks/`
-`terraform apply`
-
-### Deploy ingress controller and app
-`./scripts/deploy.sh`
+At this point, if everything went well your Mkdocs based website should be viewable at the domain name you selected!
