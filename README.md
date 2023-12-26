@@ -114,3 +114,14 @@ Lastly, initiate a deployment by going to the Actions tab and triggering the pro
 
 
 At this point, if everything went well your Mkdocs based website should be viewable at the domain name you selected!
+
+#### Tech Stack
+
+The following technologies are utilized in this repository:
+
+Github (Actions/Environments)  
+Docker  
+Oracle Cloud Infrastructure  
+Cloudflare (Tunnels/Applications/DNS)  
+Mkdocs  
+Shell Scripting  
