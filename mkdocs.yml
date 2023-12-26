@@ -1,0 +1,15 @@
+site_name: Tyler's Interview Site
+site_url: https://www.tylerlee.dev
+nav:
+  - Home:
+      'About': index.md
+  - Guides:
+      'Cheat Sheet': guides/README.md
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.tracking
+    - navigation.instant
+markdown_extentions:
+  - attr_list
