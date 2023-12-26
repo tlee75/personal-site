@@ -6,6 +6,7 @@ on:
       DEPLOY_NODE:
           required: true
           type: string
+          default: ocinode1
 
 jobs:
   build:
@@ -23,7 +24,7 @@ jobs:
         env:
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t docker.io/${{ vars.DOCKERHUB_ACCOUNT }}/${{ vars.DOCKERHUB_REPO }}:$IMAGE_TAG ./image
+          docker build -t docker.io/${{ vars.DOCKERHUB_ACCOUNT }}/${{ vars.DOCKERHUB_REPO }}:$IMAGE_TAG -f dockerfiles/mkdocs/Docker .
           docker push docker.io/${{ vars.DOCKERHUB_ACCOUNT }}/${{ vars.DOCKERHUB_REPO }}:$IMAGE_TAG
 
   deployment:

@@ -13,7 +13,7 @@ This repository contains very basic scripting and automation geared toward deplo
 
 
 ### Docker image Usage
-`docker build -t interview:v1 -f dockerfiles/Dockerfile .`
+`docker build -t interview:v1 -f dockerfiles/mkdocs/Dockerfile .`
 
 `docker run -p 8000:8000 interview:v1`
 
