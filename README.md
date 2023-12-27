@@ -97,7 +97,10 @@ Next, create Repository secrets named `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN`
 Additionally, create two more Github repository secrets named `CF_ACCESS_CLIENT_ID` and `CF_ACCESS_CLIENT_SECRET` and store
 your Cloudflare Service Auth token credentials. Also create a Github repository variables named `DOCKERHUB_ACCOUNT` and 
 `MKDOCS_APP_NAME` and store the name of your Dockerhub account and repository respectively. The repository should be named 
-after the app for consistency.  
+after the app. 
+
+Additionally, for Prometheus and Grafana support, create two additional variables `PROM_TAG` and `GRAFANA_TAG` with the
+dockerhub tags you wish to use for those two images.  
 
 #### Actions
 

@@ -1,13 +1,13 @@
 ---
 - name: Stop and Remove Previous Container
-  ansible.builtin.shell: docker stop prometheus && docker rm prometheus
+  ansible.builtin.shell: docker stop grafana && docker rm grafana
   register: docker_stop
   timeout: 30
   ignore_errors: yes
 - debug: msg="{{ docker_stop.stdout_lines }}"
 
 - name: Start New Container
-  ansible.builtin.shell: docker run -d -p 8001:8001 --name prometheus prom/prometheus:{{ PROM_TAG }}
+  ansible.builtin.shell: docker run -d -p 8002:8002 --name grafana grafana/grafana:{{ GRAFANA_TAG }}
   register: start_container
   timeout: 180
 - debug: msg="{{ start_container.stdout_lines }}"

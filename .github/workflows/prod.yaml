@@ -57,4 +57,5 @@ jobs:
             --extra-vars "CF_ACCESS_CLIENT_SECRET=${{ secrets.CF_ACCESS_CLIENT_SECRET }}" \
             --extra-vars "MKDOCS_APP_NAME=${{ vars.MKDOCS_APP_NAME }}" \
             --extra-vars "APP_TAG=${{ github.sha }} \
-            --extra-vars "PROM_TAG=${{ vars.PROM_TAG }}
+            --extra-vars "PROM_TAG=${{ vars.PROM_TAG }} \
+            --extra-vars "GRAFANA_TAG=${{ vars.GRAFANA_TAG }}
