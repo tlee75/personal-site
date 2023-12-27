@@ -49,7 +49,7 @@ kubectl run -it ubuntu --image=ubuntu:latest --rm --overrides='{"spec": {"nodeSe
 sudo cat /var/lib/rancher/k3s/server/node-token
 ```
 
-##### View auto generated config.toml
+###### View auto generated config.toml
 ```shell
 cat /var/lib/rancher/k3s/agent/etc/containerd/config.toml
 ```
