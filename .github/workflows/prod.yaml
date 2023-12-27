@@ -2,11 +2,6 @@ name: Build Prod
 
 on:
   workflow_dispatch:
-    inputs:
-      DEPLOY_NODE:
-          required: true
-          type: string
-          default: ocinode1
 
 jobs:
   build:
@@ -53,6 +48,7 @@ jobs:
       - name: Deploy
         env:
           IMAGE_TAG: ${{ github.sha }}
-          DEPLOY_NODE: ${{ inputs.DEPLOY_NODE }}
+          DOCKERHUB_ACCOUNT: ${{ vars.DOCKERHUB_ACCOUNT }}
+          DOCKERHUB_REPO: ${{ vars.DOCKERHUB_REPO }}
         run: |
           ./scripts/deploy.sh
