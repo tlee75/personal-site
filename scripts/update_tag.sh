@@ -3,8 +3,7 @@
 set +e
 set -x
 
-sudo docker ps -a
-sudo docker image ls
-sudo docker stop interview
-sudo docker rm interview
-sudo docker run -d -p 8000:8000 --name interview tlee75/interview:${IMAGE_TAG}
+sudo docker stop ${DOCKERHUB_REPO}
+sudo docker rm ${DOCKERHUB_REPO}
+sudo docker run -d -p 8000:8000 --name ${DOCKERHUB_REPO} ${DOCKERHUB_ACCOUNT}/${DOCKERHUB_REPO}:${IMAGE_TAG}
+sudo docker ps
