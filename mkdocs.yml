@@ -13,3 +13,6 @@ theme:
     - navigation.instant
 markdown_extentions:
   - attr_list
+
+extra:
+  generator: false
