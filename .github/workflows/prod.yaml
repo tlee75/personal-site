@@ -59,7 +59,7 @@ jobs:
           directory: ./ansible/playbooks/
           key: ${{secrets.SSH_PRIVATE_KEY}}
           options: |
-            --inventory ./ansible/inventory/nodes.yml
+            --inventory ../inventory/nodes.yml
             --limit node1
             --extra-vars "IMAGE_TAG=${{ github.sha }} DOCKERHUB_ACCOUNT=${{ vars.DOCKERHUB_ACCOUNT }} MKDOCS_APP_NAME=${{ vars.MKDOCS_APP_NAME }} CF_ACCESS_CLIENT_ID=${{ secrets.CF_ACCESS_CLIENT_ID }} CF_ACCESS_CLIENT_SECRET=${{ secrets.CF_ACCESS_CLIENT_SECRET }}"
             --verbose
