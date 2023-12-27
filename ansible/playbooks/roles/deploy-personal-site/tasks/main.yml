@@ -3,6 +3,7 @@
   ansible.builtin.shell: docker stop {{ MKDOCS_APP_NAME }} && docker rm {{ MKDOCS_APP_NAME }}
   register: docker_stop
   timeout: 30
+  ignore_errors: yes
 - debug: msg="{{ docker_stop.stdout_lines }}"
 
 - name: Start New Container
