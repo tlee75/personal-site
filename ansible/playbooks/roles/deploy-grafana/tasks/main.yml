@@ -7,7 +7,7 @@
 - debug: msg="{{ docker_stop.stdout_lines }}"
 
 - name: Start New Container
-  ansible.builtin.shell: docker run -d -p 8002:8002 --name grafana grafana/grafana:{{ GRAFANA_TAG }}
+  ansible.builtin.shell: docker run -d -p 3000:3000 --name grafana grafana/grafana:{{ GRAFANA_TAG }}
   register: start_container
   timeout: 180
 - debug: msg="{{ start_container.stdout_lines }}"

@@ -5,14 +5,10 @@
   roles:
     - deploy-personal-site
 
-- name: Deploy Prometheus
+- name: Deploy Monitoring
   gather_facts: no
   hosts: mkdocs_nodes
   roles:
+    - install-node-exporter
     - deploy-prometheus
-
-- name: Deploy Grafana
-  gather_facts: no
-  hosts: mkdocs_nodes
-  roles:
     - deploy-grafana

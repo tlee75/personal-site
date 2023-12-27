@@ -6,8 +6,35 @@
   ignore_errors: yes
 - debug: msg="{{ docker_stop.stdout_lines }}"
 
+- name: Create directory to put files into
+  ansible.builtin.file:
+    path: '/home/{{ ansible_user }}/.prometheus/'
+    state: directory
+    owner: '{{ ansible_user }}'
+    group: '{{ ansible_user }}'
+    mode: '0755'
+
+- name: Update Prometheus Configuration
+  ansible.builtin.template:
+    src: 'prometheus.yml'
+    dest: '/home/{{ansible_user}}/.prometheus/'
+    owner: '{{ ansible_user }}'
+    group: '{{ ansible_user }}'
+    mode: '0755'
+    force: yes
+
 - name: Start New Container
-  ansible.builtin.shell: docker run -d -p 8001:8001 --name prometheus prom/prometheus:{{ PROM_TAG }}
+  ansible.builtin.shell:
+    cmd: |
+      docker run -d -p 9090:9090 \
+        --name prometheus \
+        --volume /home/{{ansible_user}}/.prometheus/prometheus.yml:/etc/prometheus/prometheus.yml \
+        --entrypoint /bin/prometheus \
+        prom/prometheus:{{ PROM_TAG }} \
+        --config.file=/etc/prometheus/prometheus.yml \
+        --storage.tsdb.path=/prometheus \
+        --web.console.libraries=/usr/share/prometheus/console_libraries \
+        --web.console.templates=/usr/share/prometheus/consoles
   register: start_container
   timeout: 180
 - debug: msg="{{ start_container.stdout_lines }}"
