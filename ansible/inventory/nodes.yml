@@ -1,7 +1,7 @@
 all:
   vars:
     inventory_name: nodes
-    ansible_ssh_common_args: "-o ProxyCommand='cloudflared access ssh --hostname %h --id $CF_ACCESS_CLIENT_ID --secret $CF_ACCESS_CLIENT_SECRET' -o StrictHostKeyChecking=no"
+    ansible_ssh_common_args: "-o ProxyCommand='cloudflared access ssh --hostname %h --id {{ CF_ACCESS_CLIENT_ID }} --secret {{ CF_ACCESS_CLIENT_SECRET }}' -o StrictHostKeyChecking=no"
   children:
     mkdocs_nodes:
       hosts:
