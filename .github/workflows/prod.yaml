@@ -52,18 +52,28 @@ jobs:
 #          MKDOCS_APP_NAME: ${{ vars.MKDOCS_APP_NAME }}
 #        run: |
 #          ./scripts/deploy.sh
-      - name: Deploy
-        uses: dawidd6/action-ansible-playbook@v2
+      - name: Create SSH Config
+        uses: benoitchantre/setup-ssh-authentication-action@1.0.1
         with:
-          playbook: ./playbooks/deploy_prod.yml
-          directory: ./ansible/
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          options: |
-            --inventory ./inventory/nodes.yml
-            --limit node1
-            --extra-vars "IMAGE_TAG=${{ github.sha }}
-            --extra-vars "DOCKERHUB_ACCOUNT=${{ vars.DOCKERHUB_ACCOUNT }}
-            --extra-vars "MKDOCS_APP_NAME=${{ vars.MKDOCS_APP_NAME }}"
-            --extra-vars "CF_ACCESS_CLIENT_ID=${{ secrets.CF_ACCESS_CLIENT_ID }}"
-            --extra-vars "CF_ACCESS_CLIENT_SECRET=${{ secrets.CF_ACCESS_CLIENT_SECRET }}"
+          private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          private-key-name: oci_private_key
+      - name: Install Ansible
+        run: |
+          sudo apt update -y
+          sudo apt install software-properties-common -y
+          sudo add-apt-repository --yes --update ppa:ansible/ansible
+          sudo apt install ansible -y
+      - name: Deploy
+        env:
+        run: |
+          cat ./ansible/inventory/nodes.yml
+          ansible-playbook ./ansible/playbooks/deploy_prod.yml \
+            --inventory ./ansible/inventory/nodes.yml \
+            --limit node1 \
+            --extra-vars "IMAGE_TAG=${{ github.sha }} \
+            --extra-vars "DOCKERHUB_ACCOUNT=${{ vars.DOCKERHUB_ACCOUNT }} \
+            --extra-vars "MKDOCS_APP_NAME=${{ vars.MKDOCS_APP_NAME }}" \
+            --extra-vars "CF_ACCESS_CLIENT_ID=${{ secrets.CF_ACCESS_CLIENT_ID }}" \
+            --extra-vars "CF_ACCESS_CLIENT_SECRET=${{ secrets.CF_ACCESS_CLIENT_SECRET }}" \
+            --key-file ~/.ssh/oci_private_key \
             --verbose
