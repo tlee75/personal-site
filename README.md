@@ -106,7 +106,8 @@ Create a Github environment named `prod` and populate with the following:
 Next, create Repository secrets named `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN` and store your Dockerhub access token info.
 Additionally, create two more Github repository secrets named `CF_ACCESS_CLIENT_ID` and `CF_ACCESS_CLIENT_SECRET` and store
 your Cloudflare Service Auth token credentials. Also create a Github repository variables named `DOCKERHUB_ACCOUNT` and 
-`DOCKERHUB_REPO` and store the name of your Dockerhub account and repository respectively.
+`MKDOCS_APP_NAME` and store the name of your Dockerhub account and repository respectively. The repository should be named 
+after the app for consistency.  
 
 #### Actions
 
