@@ -1,2 +1,19 @@
 ---
-# tasks file for deploy-prometheus
+- name: Stop and Remove Previous Container
+  ansible.builtin.shell: docker stop prometheus && docker rm prometheus
+  register: docker_stop
+  timeout: 30
+  ignore_errors: yes
+- debug: msg="{{ docker_stop.stdout_lines }}"
+
+- name: Start New Container
+  ansible.builtin.shell: docker run -d -p 8001:8001 --name prometheus prom/prometheus:{{ IMAGE_TAG }}
+  register: start_container
+  timeout: 180
+- debug: msg="{{ start_container.stdout_lines }}"
+
+- name: List Docker Processes
+  ansible.builtin.shell: docker ps
+  register: docker_processes
+  timeout: 30
+- debug: msg="{{ docker_processes.stdout_lines }}"

@@ -4,3 +4,9 @@
   hosts: mkdocs_nodes
   roles:
     - deploy-personal-site
+
+- name: Deploy Prometheus
+  gather_facts: no
+  hosts: mkdocs_nodes
+  roles:
+    - deploy-prometheus
