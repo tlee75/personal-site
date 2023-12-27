@@ -126,3 +126,4 @@ Oracle Cloud Infrastructure
 Cloudflare (Tunnels/Applications/DNS)  
 Mkdocs  
 Shell Scripting  
+Ansible
