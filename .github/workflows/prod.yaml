@@ -55,11 +55,15 @@ jobs:
       - name: Deploy
         uses: dawidd6/action-ansible-playbook@v2
         with:
-          playbook: deploy_prod.yml
-          directory: ./ansible/playbooks/
-          key: ${{secrets.SSH_PRIVATE_KEY}}
+          playbook: ./playbooks/deploy_prod.yml
+          directory: ./ansible/
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           options: |
-            --inventory ../inventory/nodes.yml
+            --inventory ./inventory/nodes.yml
             --limit node1
-            --extra-vars "IMAGE_TAG=${{ github.sha }} DOCKERHUB_ACCOUNT=${{ vars.DOCKERHUB_ACCOUNT }} MKDOCS_APP_NAME=${{ vars.MKDOCS_APP_NAME }} CF_ACCESS_CLIENT_ID=${{ secrets.CF_ACCESS_CLIENT_ID }} CF_ACCESS_CLIENT_SECRET=${{ secrets.CF_ACCESS_CLIENT_SECRET }}"
+            --extra-vars "IMAGE_TAG=${{ github.sha }}
+            --extra-vars "DOCKERHUB_ACCOUNT=${{ vars.DOCKERHUB_ACCOUNT }}
+            --extra-vars "MKDOCS_APP_NAME=${{ vars.MKDOCS_APP_NAME }}"
+            --extra-vars "CF_ACCESS_CLIENT_ID=${{ secrets.CF_ACCESS_CLIENT_ID }}"
+            --extra-vars "CF_ACCESS_CLIENT_SECRET=${{ secrets.CF_ACCESS_CLIENT_SECRET }}"
             --verbose
