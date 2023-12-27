@@ -43,14 +43,14 @@ public internet without the need to open any ports on the firewall.
 
 Go to the [Cloudflare Zero-Trust Dashboard](https://one.dash.cloudflare.com/) and create a Cloudflare tunnel which will 
 run on your OCI instance and create an ingress rule (aka Public Hostname from UI) which will proxy your HTTP and SSH 
-traffic received by the tunnel to the correct ports on your instance. For SSH, use a subdomain like `ssh-ocinode1` for 
+traffic received by the tunnel to the correct ports on your instance. For SSH, use a subdomain like `node1-ssh` for 
 the host and set the service as SSH type at localhost, port 22. The HTTP rule can use your root domain and the www record, 
 pointed at localhost:8000.
 
 Create a Service Auth token that will be used by the Github runner as well as when you SSH from your workstation, give it
 a name which represents the application it will be used by, such as "Personal Site" or something to that effect.
 
-Next, it is very important that you create a Cloudflare Application that will protect the `ssh-ocinode1` endpoint with 
+Next, it is very important that you create a Cloudflare Application that will protect the `node1-ssh` endpoint with 
 the Service Auth Token you just created. Ensure the Application covers ONLY the SSH endpoint and not the `www` or root 
 domain itself. Ensure the Policy uses a "Service Auth" action and includes your Service Auth Token in the rules selector.
 
@@ -61,8 +61,8 @@ Lastly, create a DNS record which points at the instance's private IP, so you ha
 To SSH via your Cloudflare Tunnel, add a host to your SSH config that looks something like this:  
 
 ```shell
-Host ocinode1-cf
-  Hostname ssh-ocinode1.yourdomain.com
+Host node1-cf
+  Hostname node1-ssh.yourdomain.com
   User ubuntu
   IdentityFile ~/.ssh/oci_private_key
   StrictHostKeyChecking no
@@ -70,7 +70,7 @@ Host ocinode1-cf
 ```
 
 Next, ensure `cloudflared` is also installed on your local workstation and then attempt to SSH into the instance with 
-`ssh ocinode1-cf`. If this works, then you're ready to proceed to the next step.
+`ssh node1-cf`. If this works, then you're ready to proceed to the next step.
 
 ### Dockerhub
 
@@ -95,8 +95,8 @@ Create a Github environment named `prod` and populate with the following:
 2. Github Variable named `SSH_CONFIG`with the following contents(replace yourdomain.com with your actual domain):  
 
     ```shell
-    Host ocinode1
-      Hostname ssh-ocinode1.yourdomain.com
+    Host node1
+      Hostname node1-ssh.yourdomain.com
       User ubuntu
       IdentityFile ~/.ssh/oci_private_key
       ProxyCommand cloudflared access ssh --id SSH_CF_ACCESS_CLIENT_ID --secret SSH_CF_ACCESS_CLIENT_SECRET --hostname %h
