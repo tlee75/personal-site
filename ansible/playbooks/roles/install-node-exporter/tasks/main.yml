@@ -1,0 +1,19 @@
+- name: Install
+  ansible.builtin.include_tasks:
+    file: install.yml
+    apply:
+      become: true
+
+- name: Configure
+  ansible.builtin.include_tasks:
+    file: configure.yml
+    apply:
+      become: true
+
+- name: Start and enable service
+  become: true
+  ansible.builtin.systemd:
+    daemon_reload: true
+    name: node_exporter
+    enabled: true
+    state: started
