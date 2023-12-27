@@ -7,7 +7,7 @@
 - debug: msg="{{ docker_stop.stdout_lines }}"
 
 - name: Start New Container
-  ansible.builtin.shell: docker run -d -p 8000:8000 --name {{ MKDOCS_APP_NAME }} {{ DOCKERHUB_ACCOUNT }}/{{ MKDOCS_APP_NAME }}:{{ IMAGE_TAG }}
+  ansible.builtin.shell: docker run -d -p 8000:8000 --name {{ MKDOCS_APP_NAME }} {{ DOCKERHUB_ACCOUNT }}/{{ MKDOCS_APP_NAME }}:{{ APP_TAG }}
   register: start_container
   timeout: 180
 - debug: msg="{{ start_container.stdout_lines }}"

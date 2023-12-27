@@ -50,10 +50,11 @@ jobs:
           ansible-playbook ./ansible/playbooks/deploy.yml \
             --inventory ./ansible/inventory/nodes.yml \
             --limit node1 \
-            --extra-vars "IMAGE_TAG=${{ github.sha }} \
+            --key-file ~/.ssh/oci_private_key \
+            --verbose \
             --extra-vars "DOCKERHUB_ACCOUNT=${{ vars.DOCKERHUB_ACCOUNT }} \
-            --extra-vars "MKDOCS_APP_NAME=${{ vars.MKDOCS_APP_NAME }}" \
             --extra-vars "CF_ACCESS_CLIENT_ID=${{ secrets.CF_ACCESS_CLIENT_ID }}" \
             --extra-vars "CF_ACCESS_CLIENT_SECRET=${{ secrets.CF_ACCESS_CLIENT_SECRET }}" \
-            --key-file ~/.ssh/oci_private_key \
-            --verbose
+            --extra-vars "MKDOCS_APP_NAME=${{ vars.MKDOCS_APP_NAME }}" \
+            --extra-vars "APP_TAG=${{ github.sha }} \
+            --extra-vars "PROM_TAG=${{ vars.PROM_TAG }}
