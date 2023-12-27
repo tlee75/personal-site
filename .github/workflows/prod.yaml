@@ -47,7 +47,6 @@ jobs:
           sudo apt install ansible -y
       - name: Deploy
         run: |
-          cat ./ansible/inventory/nodes.yml
           ansible-playbook ./ansible/playbooks/deploy_prod.yml \
             --inventory ./ansible/inventory/nodes.yml \
             --limit node1 \
