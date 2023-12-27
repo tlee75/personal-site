@@ -1,0 +1,6 @@
+---
+- name: Deploy Personal Site
+  gather_facts: no
+  hosts: mkdocs_nodes
+  roles:
+    - deploy-personal-site

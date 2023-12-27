@@ -40,15 +40,26 @@ jobs:
           private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           private-key-name: oci_private_key
           ssh-config: ${{ vars.SSH_CONFIG }}
-      - name: Setup SSH Config
-        run: |
-          sed -i "s/SSH_CF_ACCESS_CLIENT_ID/${{ secrets.CF_ACCESS_CLIENT_ID }}/" ~/.ssh/config
-          sed -i "s/SSH_CF_ACCESS_CLIENT_SECRET/${{ secrets.CF_ACCESS_CLIENT_SECRET }}/" ~/.ssh/config
-          cat ~/.ssh/config
+#      - name: Setup SSH Config
+#        run: |
+#          sed -i "s/SSH_CF_ACCESS_CLIENT_ID/${{ secrets.CF_ACCESS_CLIENT_ID }}/" ~/.ssh/config
+#          sed -i "s/SSH_CF_ACCESS_CLIENT_SECRET/${{ secrets.CF_ACCESS_CLIENT_SECRET }}/" ~/.ssh/config
+#          cat ~/.ssh/config
+#      - name: Deploy
+#        env:
+#          IMAGE_TAG: ${{ github.sha }}
+#          DOCKERHUB_ACCOUNT: ${{ vars.DOCKERHUB_ACCOUNT }}
+#          MKDOCS_APP_NAME: ${{ vars.MKDOCS_APP_NAME }}
+#        run: |
+#          ./scripts/deploy.sh
       - name: Deploy
-        env:
-          IMAGE_TAG: ${{ github.sha }}
-          DOCKERHUB_ACCOUNT: ${{ vars.DOCKERHUB_ACCOUNT }}
-          MKDOCS_APP_NAME: ${{ vars.MKDOCS_APP_NAME }}
-        run: |
-          ./scripts/deploy.sh
+        uses: dawidd6/action-ansible-playbook@v2
+        with:
+          playbook: deploy_prod.yml
+          directory: ./ansible/playbooks/
+          key: ${{secrets.SSH_PRIVATE_KEY}}
+          options: |
+            --inventory ./ansible/inventory/nodes.yml
+            --limit node1
+            --extra-vars "IMAGE_TAG=${{ github.sha }} DOCKERHUB_ACCOUNT=${{ vars.DOCKERHUB_ACCOUNT }} MKDOCS_APP_NAME=${{ vars.MKDOCS_APP_NAME }} CF_ACCESS_CLIENT_ID=${{ secrets.CF_ACCESS_CLIENT_ID }} CF_ACCESS_CLIENT_SECRET=${{ secrets.CF_ACCESS_CLIENT_SECRET }}"
+            --verbose
