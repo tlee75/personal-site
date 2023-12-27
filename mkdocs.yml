@@ -1,14 +1,16 @@
-site_name: Tyler's Interview Site
+site_name: Tyler's Personal Site
 site_url: https://www.tylerlee.dev
 nav:
-  - Home:
-      'About': index.md
-  - Guides:
-      'Cheat Sheet': guides/README.md
+  - Home: index.md
+  - Cheat Sheets:
+      'Linux': cheat-sheets/linux/README.md
+      'Kubernetes': cheat-sheets/kubernetes/README.md
+      'Docker': cheat-sheets/docker/README.md
+      'Cloudflare': cheat-sheets/cloudflare/README.md
+      'Misc': cheat-sheets/misc/README.md
 theme:
   name: material
   features:
-    - navigation.tabs
     - navigation.tracking
     - navigation.instant
 markdown_extentions:
