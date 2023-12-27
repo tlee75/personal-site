@@ -8,7 +8,7 @@
 - name: Start New Container
   ansible.builtin.shell: docker run -d -p 8000:8000 --name {{ MKDOCS_APP_NAME }} {{ DOCKERHUB_ACCOUNT }}/{{ MKDOCS_APP_NAME }}:{{ IMAGE_TAG }}
   register: start_container
-  timeout: 30
+  timeout: 180
 - debug: msg="{{ start_container.stdout_lines }}"
 
 - name: List Docker Processes
