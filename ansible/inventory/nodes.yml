@@ -4,6 +4,7 @@ all:
     ansible_ssh_common_args: "-o ProxyCommand='cloudflared access ssh --hostname %h --id $CF_ACCESS_CLIENT_ID --secret $CF_ACCESS_CLIENT_SECRET' -o StrictHostKeyChecking=no"
   children:
     mkdocs_nodes:
-      node1:
-        ansible_host: node1-ssh.tylerlee.dev
-        ansible_user: ubuntu
+      hosts:
+        node1:
+          ansible_host: node1-ssh.tylerlee.dev
+          ansible_user: ubuntu
