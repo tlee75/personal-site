@@ -19,8 +19,8 @@ jobs:
         env:
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t docker.io/${{ vars.DOCKERHUB_ACCOUNT }}/${{ vars.MKDOCS_DOCKERHUB_REPO }}:$IMAGE_TAG -f dockerfiles/mkdocs/Dockerfile .
-          docker push docker.io/${{ vars.DOCKERHUB_ACCOUNT }}/${{ vars.MKDOCS_DOCKERHUB_REPO }}:$IMAGE_TAG
+          docker build -t docker.io/${{ vars.DOCKERHUB_ACCOUNT }}/${{ vars.MKDOCS_APP_NAME }}:$IMAGE_TAG -f dockerfiles/mkdocs/Dockerfile .
+          docker push docker.io/${{ vars.DOCKERHUB_ACCOUNT }}/${{ vars.MKDOCS_APP_NAME }}:$IMAGE_TAG
 
   deployment:
     name: Deploy
@@ -49,6 +49,6 @@ jobs:
         env:
           IMAGE_TAG: ${{ github.sha }}
           DOCKERHUB_ACCOUNT: ${{ vars.DOCKERHUB_ACCOUNT }}
-          MKDOCS_DOCKERHUB_REPO: ${{ vars.MKDOCS_DOCKERHUB_REPO }}
+          MKDOCS_APP_NAME: ${{ vars.MKDOCS_APP_NAME }}
         run: |
           ./scripts/deploy.sh
