@@ -80,9 +80,9 @@ automation dedicated to pushing and pulling images.
 ### Github
 
 #### Environment 
-Create a Github environment named `prod` and populate with the following:  
+Create a Github environment named `prod` and create a Github Secret named `SSH_PRIVATE_KEY` with a private key to your 
+OCI instance in this format:
 
-1. Github Secret named `SSH_PRIVATE_KEY` with a private key to your OCI instance in this format:
     ```shell
     -----BEGIN RSA PRIVATE KEY-----
     XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -91,17 +91,7 @@ Create a Github environment named `prod` and populate with the following:
     XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
     -----END RSA PRIVATE KEY-----
     ```
- 
-2. Github Variable named `SSH_CONFIG`with the following contents(replace yourdomain.com with your actual domain):  
 
-    ```shell
-    Host node1
-      Hostname node1-ssh.yourdomain.com
-      User ubuntu
-      IdentityFile ~/.ssh/oci_private_key
-      ProxyCommand cloudflared access ssh --id SSH_CF_ACCESS_CLIENT_ID --secret SSH_CF_ACCESS_CLIENT_SECRET --hostname %h
-      StrictHostKeyChecking no
-    ```
 
 Next, create Repository secrets named `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN` and store your Dockerhub access token info.
 Additionally, create two more Github repository secrets named `CF_ACCESS_CLIENT_ID` and `CF_ACCESS_CLIENT_SECRET` and store

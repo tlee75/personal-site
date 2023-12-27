@@ -27,3 +27,8 @@ sudo fuser --vki /var/cache/debconf/config.dat
 ```shell
 sudo apt install -y --fix-broken
 ```
+
+#### Run a shell script remotely without transferring to disk
+```shell
+ssh -o ConnectTimeout=10 -T node1 "VAR1=${VAR1} bash -s" < ./script.sh
+```
