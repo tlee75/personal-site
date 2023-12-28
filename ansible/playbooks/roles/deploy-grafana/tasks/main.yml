@@ -1,13 +1,67 @@
 ---
-- name: Stop and Remove Previous Container
+- name: Stop and Remove Previous Grafana Container
   ansible.builtin.shell: docker stop grafana && docker rm grafana
   register: docker_stop
   timeout: 30
   ignore_errors: yes
 - debug: msg="{{ docker_stop.stdout_lines }}"
 
-- name: Start New Container
-  ansible.builtin.shell: docker run -d -p 3000:3000 --name grafana grafana/grafana:{{ GRAFANA_TAG }}
+- name: Create Docker Network
+  ansible.builtin.shell: docker network create grafana-prometheus
+  register: create_network
+  timeout: 30
+  ignore_errors: yes
+- debug: msg="{{ create_network.stdout_lines }}"
+
+- name: Remove Grafana Volume
+  ansible.builtin.shell: docker volume rm grafana-storage
+  register: cleanup_volume
+  timeout: 30
+  when: 'GRAFANA_RESET == "true"'
+
+- name: Create directory to put files into
+  ansible.builtin.file:
+    path: '/home/{{ ansible_user }}/.grafana/dashboards'
+    state: directory
+    owner: '{{ ansible_user }}'
+    group: '{{ ansible_user }}'
+    mode: '0755'
+
+- name: Update Provisioning Files
+  ansible.builtin.template:
+    src: '{{ item }}'
+    dest: '/home/{{ansible_user}}/.grafana/'
+    owner: '{{ ansible_user }}'
+    group: '{{ ansible_user }}'
+    mode: '0644'
+    force: yes
+  loop:
+  - dashboards.yml
+  - datasources.yml
+
+- name: Update Dashboard
+  ansible.builtin.copy:
+    src: system_metrics.json
+    dest: /home/{{ ansible_user }}/.grafana/dashboards/system_metrics.json
+    owner: '{{ ansible_user }}'
+    group: '{{ ansible_user }}'
+    mode: '0644'
+
+- name: Start New Grafana Container
+  ansible.builtin.shell:
+    cmd: |
+      docker run -d -p 3000:3000 --name grafana \
+        --volume "grafana-storage:/var/lib/grafana" \
+        -v "/home/{{ ansible_user }}/.grafana/datasources.yml/:{{ GRAFANA_WORKDIR }}/{{ GRAFANA_PROVISIONING_PATH }}/datasources/datasources.yml" \
+        -v "/home/{{ ansible_user }}/.grafana/dashboards.yml/:{{ GRAFANA_WORKDIR }}/{{ GRAFANA_PROVISIONING_PATH }}/dashboards/dashboards.yml" \
+        -v "/home/{{ ansible_user }}/.grafana/dashboards/:/var/lib/grafana/dashboards/" \
+        --network grafana-prometheus \
+        -e "GF_SERVER_ROOT_URL=http://grafana.tylerlee.dev/" \
+        -e "GF_INSTALL_PLUGINS=grafana-clock-panel" \
+        -e "GF_SECURITY_ADMIN_USER={{ GRAFANA_ADMIN_USER }}" \
+        -e "GF_SECURITY_ADMIN_PASSWORD={{ GRAFANA_ADMIN_PASSWORD }}" \
+        -e "GF_PATHS_PROVISIONING={{ GRAFANA_PROVISIONING_PATH }}" \
+        grafana/grafana-oss:{{ GRAFANA_TAG }}
   register: start_container
   timeout: 180
 - debug: msg="{{ start_container.stdout_lines }}"

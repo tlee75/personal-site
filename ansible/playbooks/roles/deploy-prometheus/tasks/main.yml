@@ -20,8 +20,15 @@
     dest: '/home/{{ansible_user}}/.prometheus/'
     owner: '{{ ansible_user }}'
     group: '{{ ansible_user }}'
-    mode: '0755'
+    mode: '0644'
     force: yes
+
+- name: Create Docker Network
+  ansible.builtin.shell: docker network create grafana-prometheus
+  register: create_network
+  timeout: 30
+  ignore_errors: yes
+- debug: msg="{{ create_network.stdout_lines }}"
 
 - name: Start New Container
   ansible.builtin.shell:
@@ -29,6 +36,7 @@
       docker run -d -p 9090:9090 \
         --name prometheus \
         --volume /home/{{ansible_user}}/.prometheus/prometheus.yml:/etc/prometheus/prometheus.yml \
+        --network grafana-prometheus \
         --entrypoint /bin/prometheus \
         prom/prometheus:{{ PROM_TAG }} \
         --config.file=/etc/prometheus/prometheus.yml \
