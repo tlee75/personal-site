@@ -1,14 +1,14 @@
 ---
-- name: Deploy Personal Site
-  gather_facts: no
-  hosts: mkdocs_nodes
-  roles:
-    - deploy-personal-site
+#- name: Deploy Personal Site
+#  gather_facts: no
+#  hosts: mkdocs_nodes
+#  roles:
+#    - deploy-personal-site
 
 - name: Deploy Monitoring
   gather_facts: no
   hosts: mkdocs_nodes
   roles:
-    - install-node-exporter
-    - deploy-prometheus
+#    - install-node-exporter
+#    - deploy-prometheus
     - deploy-grafana
