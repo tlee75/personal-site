@@ -68,4 +68,4 @@ jobs:
             --extra-vars "GRAFANA_ADMIN_PASSWORD=${{ secrets.GF_SECURITY_ADMIN_PASSWORD }}" \
             --extra-vars "GRAFANA_WORKDIR=/usr/share/grafana" \
             --extra-vars "GRAFANA_PROVISIONING_PATH=conf/provisioning" \
-            --extra-vars "GRAFANA_RESET=${{ inputs.GRAFANA_RESET }}
+            --extra-vars "GRAFANA_RESET=${{ inputs.GRAFANA_RESET }}"
