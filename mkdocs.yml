@@ -8,6 +8,8 @@ nav:
       'Docker': cheat-sheets/docker/README.md
       'Cloudflare': cheat-sheets/cloudflare/README.md
       'Misc': cheat-sheets/misc/README.md
+  - Observability:
+      'Monitoring': observability/monitoring/README.md
 theme:
   name: material
   features:
