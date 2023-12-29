@@ -64,8 +64,8 @@ jobs:
             --extra-vars "APP_TAG=${{ github.sha }} \
             --extra-vars "PROM_TAG=${{ vars.PROM_TAG }} \
             --extra-vars "GRAFANA_TAG=${{ vars.GRAFANA_TAG }} \
-            --extra-vars "GRAFANA_ADMIN_USER=${{ secrets.GF_SECURITY_ADMIN_USER }}" \
-            --extra-vars "GRAFANA_ADMIN_PASSWORD=${{ secrets.GF_SECURITY_ADMIN_PASSWORD }}" \
+            --extra-vars "GRAFANA_ADMIN_USER=${{ secrets.GRAFANA_ADMIN_USER }}" \
+            --extra-vars "GRAFANA_ADMIN_PASSWORD=${{ secrets.GRAFANA_ADMIN_PASSWORD }}" \
             --extra-vars "GRAFANA_WORKDIR=/usr/share/grafana" \
             --extra-vars "GRAFANA_PROVISIONING_PATH=conf/provisioning" \
             --extra-vars "GRAFANA_RESET=${{ inputs.GRAFANA_RESET }}"
