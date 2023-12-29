@@ -92,7 +92,6 @@ OCI instance in this format:
     -----END RSA PRIVATE KEY-----
     ```
 
-
 Next, create Repository secrets named `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN` and store your Dockerhub access token info.
 Additionally, create two more Github repository secrets named `CF_ACCESS_CLIENT_ID` and `CF_ACCESS_CLIENT_SECRET` and store
 your Cloudflare Service Auth token credentials. Also create a Github repository variables named `DOCKERHUB_ACCOUNT` and 
@@ -100,7 +99,8 @@ your Cloudflare Service Auth token credentials. Also create a Github repository 
 after the app. 
 
 Additionally, for Prometheus and Grafana support, create two additional variables `PROM_TAG` and `GRAFANA_TAG` with the
-dockerhub tags you wish to use for those two images.  
+dockerhub tags you wish to use for those two images. To set the initial admin credentials for Grafana, create two more 
+secrets named `GRAFANA_ADMIN_USER` and `GRAFANA_ADMIN_PASSWORD`. 
 
 #### Actions
 
@@ -120,3 +120,5 @@ Cloudflare (Tunnels/Applications/DNS)
 Mkdocs  
 Shell Scripting  
 Ansible
+Grafana
+Prometheus
