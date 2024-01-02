@@ -33,28 +33,6 @@ Ensure [Docker](https://docs.docker.com/engine/install/ubuntu/) and [cloudflared
 have been installed. I also recommend creating a separate SSH private key which will be used later which can be rotated
 easily on a regular basis.  
 
-### Cloudflare
-
-Create/login to your [Cloudflare dashboard](https://dash.cloudflare.com/) and ensure the domain you want to use for this 
-is activated.
-
-The next goal is to configure the Cloudflare Tunnel so we can get access to our compute from a Github Runner and from the 
-public internet without the need to open any ports on the firewall. 
-
-Go to the [Cloudflare Zero-Trust Dashboard](https://one.dash.cloudflare.com/) and create a Cloudflare tunnel which will 
-run on your OCI instance and create an ingress rule (aka Public Hostname from UI) which will proxy your HTTP and SSH 
-traffic received by the tunnel to the correct ports on your instance. For SSH, use a subdomain like `node1-ssh` for 
-the host and set the service as SSH type at localhost, port 22. The HTTP rule can use your root domain and the www record, 
-pointed at localhost:8000.
-
-Create a Service Auth token that will be used by the Github runner as well as when you SSH from your workstation, give it
-a name which represents the application it will be used by, such as "Personal Site" or something to that effect.
-
-Next, it is very important that you create a Cloudflare Application that will protect the `node1-ssh` endpoint with 
-the Service Auth Token you just created. Ensure the Application covers ONLY the SSH endpoint and not the `www` or root 
-domain itself. Ensure the Policy uses a "Service Auth" action and includes your Service Auth Token in the rules selector.
-
-Lastly, create a DNS record which points at the instance's private IP, so you have an FQDN for the hostname.
 
 ### Cloudflare SSH Config
 
@@ -94,9 +72,9 @@ OCI instance in this format:
 
 Next, create Repository secrets named `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN` and store your Dockerhub access token info.
 Additionally, create two more Github repository secrets named `CF_ACCESS_CLIENT_ID` and `CF_ACCESS_CLIENT_SECRET` and store
-your Cloudflare Service Auth token credentials. Also create a Github repository variables named `DOCKERHUB_ACCOUNT` and 
-`MKDOCS_APP_NAME` and store the name of your Dockerhub account and repository respectively. The repository should be named 
-after the app. 
+your Cloudflare Service Auth token credentials which has access to the Cloudflare Tunnel Application. Also create a Github 
+repository variables named `DOCKERHUB_ACCOUNT` and `MKDOCS_APP_NAME` and store the name of your Dockerhub account and 
+repository respectively. The repository should be named after the app.  
 
 Additionally, for Prometheus and Grafana support, create two additional variables `PROM_TAG` and `GRAFANA_TAG` with the
 dockerhub tags you wish to use for those two images. To set the initial admin credentials for Grafana, create two more 
