@@ -17,6 +17,7 @@
   ansible.builtin.shell: docker volume rm grafana-storage
   register: cleanup_volume
   timeout: 30
+  ignore_errors: yes
   when: 'GRAFANA_RESET == "true"'
 
 - name: Create directory to put files into
