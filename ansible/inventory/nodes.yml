@@ -6,5 +6,5 @@ all:
     mkdocs_nodes:
       hosts:
         node1:
-          ansible_host: node1-ssh.tylerlee.dev
+          ansible_host: ssh.tylerlee.dev
           ansible_user: ubuntu
