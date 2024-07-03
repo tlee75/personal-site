@@ -33,3 +33,5 @@ sudo apt install -y --fix-broken
 ```shell
 ssh -o ConnectTimeout=10 -T node1 "VAR1=${VAR1} bash -s" < ./script.sh
 ```
+
+
